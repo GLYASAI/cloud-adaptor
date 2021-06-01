@@ -116,12 +116,10 @@ func run(c *cli.Context) error {
 	logrus.Infof("start listen %s", c.String("listen"))
 	go engine.Run(c.String("listen"))
 
-	term := make(chan os.Signal)
+	term := make(chan os.Signal, 1)
 	signal.Notify(term, os.Interrupt, syscall.SIGTERM)
-	select {
-	case <-term:
-		logrus.Warn("Received SIGTERM, exiting gracefully...")
-	}
+	<-term
+	logrus.Warn("Received SIGTERM, exiting gracefully...")
 	logrus.Info("See you next time!")
 	return nil
 }
