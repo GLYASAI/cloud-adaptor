@@ -1,0 +1,9 @@
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: golang
+  commands:
+  - cd cmd/cloud-adaptor/
+  - go build
