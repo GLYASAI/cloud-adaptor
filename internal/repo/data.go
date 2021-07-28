@@ -28,7 +28,6 @@ var ProviderSet = wire.NewSet(
 	NewCloudAccessKeyRepo,
 	NewKubernetesTaskRepo,
 	NewInitRainbondRegionTaskRepo,
-	NewUpdateKubernetesTaskRepo,
 	NewTaskEventRepo,
 	NewRainbondClusterConfigRepo,
 	NewAppStoreRepo,

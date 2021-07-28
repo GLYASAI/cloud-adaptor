@@ -25,8 +25,8 @@ import (
 	"goodrain.com/cloud-adaptor/internal/model"
 )
 
-// KubernetesTaskResp -
-type KubernetesTaskResp struct {
+// KubernetesTask -
+type KubernetesTask struct {
 	Name               string `json:"name"`
 	WorkerResourceType string `json:"resourceType"`
 	WorkerNum          int    `json:"workerNum"`
@@ -107,9 +107,9 @@ type CreateKubernetesRes struct {
 //UpdateKubernetesRes create kubernetes res
 //swagger:model UpdateKubernetesRes
 type UpdateKubernetesRes struct {
-	Task      *KubernetesTaskResp `json:"task"`
-	NodeList  v1alpha1.NodeList   `json:"nodeList"`
-	RKEConfig string              `json:"rkeConfig"`
+	Task      *KubernetesTask   `json:"task"`
+	NodeList  v1alpha1.NodeList `json:"nodeList"`
+	RKEConfig string            `json:"rkeConfig"`
 }
 
 //GetLastCreateKubernetesClusterTaskReq get last create kubernetes task
