@@ -16,25 +16,25 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-package repo
+package mapper
 
 import (
-	"github.com/google/wire"
-	"goodrain.com/cloud-adaptor/internal/repo/appstore"
+	"github.com/devfeel/mapper"
+	"github.com/sirupsen/logrus"
+	"runtime/debug"
 )
 
-// ProviderSet is data providers.
-var ProviderSet = wire.NewSet(
-	NewCloudAccessKeyRepo,
-	NewKubernetesTaskRepo,
-	NewInitRainbondRegionTaskRepo,
-	NewUpdateKubernetesTaskRepo,
-	NewTaskEventRepo,
-	NewRainbondClusterConfigRepo,
-	NewAppStoreRepo,
-	NewRKEClusterRepo,
-	NewTemplateVersionRepo,
-	appstore.NewStorer,
-	appstore.NewAppTemplater,
-	appstore.NewTemplateVersioner,
-)
+// Mapper mapper and set value from struct fromObj to toObj
+// not support auto register struct
+func Mapper(fromObj, toObj interface{}) {
+	defer func() {
+		if r := recover(); r != nil {
+			logrus.Warningf("mapper panic: %v", r)
+			debug.PrintStack()
+		}
+	}()
+	err := mapper.Mapper(fromObj, toObj)
+	if err != nil {
+		logrus.Warningf("mapper error: %v", err)
+	}
+}

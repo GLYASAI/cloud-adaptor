@@ -25,4 +25,5 @@ import (
 // ProviderSet is dao providers.
 var ProviderSet = wire.NewSet(
 	NewAppStoreDao,
+	NewKubernetesTaskRepo,
 )

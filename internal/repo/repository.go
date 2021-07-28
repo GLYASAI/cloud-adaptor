@@ -29,15 +29,6 @@ type CloudAccesskeyRepository interface {
 	GetByProviderAndEnterprise(providerName, eid string) (*model.CloudAccessKey, error)
 }
 
-//CreateKubernetesTaskRepository enterprise create kubernetes task
-type CreateKubernetesTaskRepository interface {
-	Transaction(tx *gorm.DB) CreateKubernetesTaskRepository
-	Create(ent *model.CreateKubernetesTask) error
-	GetLastTask(eid string, providerName string) (*model.CreateKubernetesTask, error)
-	UpdateStatus(eid string, taskID string, status string) error
-	GetTask(eid string, taskID string) (*model.CreateKubernetesTask, error)
-}
-
 //InitRainbondTaskRepository init rainbond region task
 type InitRainbondTaskRepository interface {
 	Transaction(tx *gorm.DB) InitRainbondTaskRepository

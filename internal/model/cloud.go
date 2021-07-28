@@ -38,7 +38,9 @@ type CreateKubernetesTask struct {
 	EnterpriseID       string `gorm:"column:eid" json:"eid"`
 	TaskID             string `gorm:"column:task_id" json:"taskID"`
 	Status             string `gorm:"column:status" json:"status"`
-	ClusterID          string `gorm:"column:cluster_id" json:"clusterID"`
+	ClusterID          string `gorm:"column:cluster_id;uniqueIndex:kubernetes_task_version;type:varchar(64)" json:"clusterID"`
+	// Version for optimistic lock
+	Version int `gorm:"column:version;uniqueIndex:kubernetes_task_version;" json:"version"`
 }
 
 //InitRainbondTask init rainbond task

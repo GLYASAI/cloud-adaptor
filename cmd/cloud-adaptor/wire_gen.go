@@ -23,6 +23,7 @@ import (
 
 import (
 	_ "github.com/helm/helm/pkg/repo"
+	_ "github.com/rancher/rancher/pkg/apis/management.cattle.io/v3"
 	_ "goodrain.com/cloud-adaptor/api/cloud-adaptor/v1"
 	_ "k8s.io/helm/pkg/proto/hapi/chart"
 )
@@ -38,13 +39,14 @@ func initApp(contextContext context.Context, db *gorm.DB, configConfig *config.C
 	middlewareMiddleware := middleware.NewMiddleware(appStoreRepo)
 	taskProducer := producer.NewTaskChannelProducer(arg, arg2, arg3)
 	cloudAccesskeyRepository := repo.NewCloudAccessKeyRepo(db)
-	createKubernetesTaskRepository := repo.NewCreateKubernetesTaskRepo(db)
+	kubernetesTaskDao := dao.NewKubernetesTaskRepo(db)
+	kubernetesTaskRepo := repo.NewKubernetesTaskRepo(kubernetesTaskDao)
 	initRainbondTaskRepository := repo.NewInitRainbondRegionTaskRepo(db)
 	updateKubernetesTaskRepository := repo.NewUpdateKubernetesTaskRepo(db)
 	taskEventRepository := repo.NewTaskEventRepo(db)
 	rainbondClusterConfigRepository := repo.NewRainbondClusterConfigRepo(db)
 	rkeClusterRepository := repo.NewRKEClusterRepo(db)
-	clusterUsecase := usecase.NewClusterUsecase(db, taskProducer, cloudAccesskeyRepository, createKubernetesTaskRepository, initRainbondTaskRepository, updateKubernetesTaskRepository, taskEventRepository, rainbondClusterConfigRepository, rkeClusterRepository)
+	clusterUsecase := usecase.NewClusterUsecase(db, taskProducer, cloudAccesskeyRepository, kubernetesTaskRepo, initRainbondTaskRepository, updateKubernetesTaskRepository, taskEventRepository, rainbondClusterConfigRepository, rkeClusterRepository)
 	clusterHandler := handler.NewClusterHandler(clusterUsecase)
 	appStoreUsecase := usecase.NewAppStoreUsecase(appStoreRepo)
 	templateVersioner := appstore.NewTemplateVersioner(configConfig)

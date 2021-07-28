@@ -25,6 +25,19 @@ import (
 	"goodrain.com/cloud-adaptor/internal/model"
 )
 
+// KubernetesTaskResp -
+type KubernetesTaskResp struct {
+	Name               string `json:"name"`
+	WorkerResourceType string `json:"resourceType"`
+	WorkerNum          int    `json:"workerNum"`
+	Provider           string `json:"providerName"`
+	Region             string `json:"region"`
+	EnterpriseID       string `json:"eid"`
+	TaskID             string `json:"taskID"`
+	Status             string `json:"status"`
+	ClusterID          string `json:"clusterID"`
+}
+
 //ListKubernetesCluster list kubernetes cluster request body
 //swagger:model ListKubernetesCluster
 type ListKubernetesCluster struct {

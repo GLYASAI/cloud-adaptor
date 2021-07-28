@@ -16,25 +16,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-package repo
+package domain
 
-import (
-	"github.com/google/wire"
-	"goodrain.com/cloud-adaptor/internal/repo/appstore"
-)
-
-// ProviderSet is data providers.
-var ProviderSet = wire.NewSet(
-	NewCloudAccessKeyRepo,
-	NewKubernetesTaskRepo,
-	NewInitRainbondRegionTaskRepo,
-	NewUpdateKubernetesTaskRepo,
-	NewTaskEventRepo,
-	NewRainbondClusterConfigRepo,
-	NewAppStoreRepo,
-	NewRKEClusterRepo,
-	NewTemplateVersionRepo,
-	appstore.NewStorer,
-	appstore.NewAppTemplater,
-	appstore.NewTemplateVersioner,
-)
+// KubernetesTask -
+type KubernetesTask struct {
+	EnterpriseID       string `json:"eid"`
+	ClusterID          string `json:"clusterID"`
+	Version            int    `json:"version"`
+	TaskID             string `json:"taskID"`
+	Name               string `json:"name"`
+	WorkerResourceType string `json:"resourceType"`
+	WorkerNum          int    `json:"workerNum"`
+	Provider           string `json:"provider"`
+	Region             string `json:"region"`
+	Status             string `json:"status"`
+}
