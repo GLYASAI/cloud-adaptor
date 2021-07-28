@@ -35,6 +35,7 @@ type KubernetesTaskRepo interface {
 	UpdateStatus(eid string, taskID string, status string) error
 	GetLastTask(eid string, providerName string) (*domain.KubernetesTask, error)
 	GetTask(eid string, taskID string) (*domain.KubernetesTask, error)
+	GetLastOneByClusterID(clusterID string) (*domain.KubernetesTask, error)
 }
 
 // NewKubernetesTaskRepo creates a new KubernetesTaskRepo.
@@ -96,4 +97,15 @@ func (k *kubernetesTaskRepo) Create(kubernetesTask *domain.KubernetesTask) error
 	task := &model.CreateKubernetesTask{}
 	mapper.Mapper(kubernetesTask, task)
 	return k.kubernetesTaskDao.Create(task)
+}
+
+func (k *kubernetesTaskRepo) GetLastOneByClusterID(clusterID string) (*domain.KubernetesTask, error) {
+	task, err := k.kubernetesTaskDao.GetLastOneByClusterID(clusterID)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &domain.KubernetesTask{}
+	mapper.Mapper(task, res)
+	return res, nil
 }

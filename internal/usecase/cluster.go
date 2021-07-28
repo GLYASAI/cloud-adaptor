@@ -397,7 +397,7 @@ func (c *ClusterUsecase) GetInitRainbondTaskByClusterID(eid, clusterID, provider
 
 //GetUpdateKubernetesTask get update kubernetes task
 func (c *ClusterUsecase) GetUpdateKubernetesTask(eid, clusterID, providerName string) (*v1.UpdateKubernetesRes, error) {
-	task, err := c.getUpdateKubernetesTask(eid, clusterID, providerName)
+	task, err := c.getKubernetesTask(clusterID)
 	if err != nil {
 		return nil, err
 	}
@@ -430,15 +430,15 @@ func (c *ClusterUsecase) GetUpdateKubernetesTask(eid, clusterID, providerName st
 	return &re, nil
 }
 
-func (c *ClusterUsecase) getUpdateKubernetesTask(eid, clusterID, providerName string) (*model.UpdateKubernetesTask, error) {
-	task, err := c.UpdateKubernetesTaskRepo.GetTaskByClusterID(eid, providerName, clusterID)
-	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			return nil, nil
-		}
+func (c *ClusterUsecase) getKubernetesTask(clusterID string) (*v1.KubernetesTaskResp, error) {
+	task, err := c.kubernetesTaskRepo.GetLastOneByClusterID(clusterID)
+	if err != nil && !errors.Is(err, bcode.ErrKubernetesTaskNotFound) {
 		return nil, err
 	}
-	return task, nil
+
+	res := &v1.KubernetesTaskResp{}
+	mapper.Mapper(task, res)
+	return res, nil
 }
 
 func (c *ClusterUsecase) getRKEConfig(eid string, cluster *model.RKECluster) (*v3.RancherKubernetesEngineConfig, error) {
